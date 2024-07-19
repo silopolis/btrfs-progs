@@ -27,7 +27,10 @@ RUN zypper install -y --no-recommends glibc-devel-static libblkid-devel-static \
 
 RUN zypper install -y --no-recommends libgcrypt-devel libsodium-devel libkcapi-devel \
 	   libbotan-devel libopenssl-3-devel
-RUN zypper install -y --no-recommends gcc14
+
+RUN zypper -n --gpg-auto-import-keys ar --no-gpgcheck --refresh https://download.opensuse.org/repositories/devel:/gcc:/next/openSUSE_Tumbleweed/ tw-oss
+RUN zypper install -y --allow-vendor-change gcc15
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 15
 
 COPY ./test-build .
 COPY ./run-tests .
